@@ -1,0 +1,46 @@
+.header {
+  position: sticky;
+  top: 0;
+  height: var(--header-height);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  z-index: 100;
+  box-shadow: var(--shadow-sm);
+}
+
+.left { display: flex; align-items: center; gap: 1rem; }
+.title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  letter-spacing: -0.01em;
+}
+
+.right { display: flex; align-items: center; gap: 1.25rem; }
+
+.userInfo { display: flex; align-items: center; gap: 0.75rem; }
+.avatar {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.userDetails { display: flex; flex-direction: column; }
+.userName { font-size: 0.875rem; font-weight: 600; color: var(--color-text); line-height: 1.2; }
+.userRole { font-size: 0.7rem; color: var(--color-text-muted); }
+
+.logoutBtn { display: flex; align-items: center; gap: 0.35rem; }
+
+@media (max-width: 768px) {
+  .header { padding: 0 1rem 0 3.5rem; }
+  .title { display: none; }
+  .userDetails { display: none; }
+}

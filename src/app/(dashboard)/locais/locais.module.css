@@ -1,0 +1,27 @@
+.searchCard { margin-bottom: 1.25rem; padding: 1rem; }
+.searchWrap { position: relative; }
+.searchIcon { position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); color: var(--color-text-muted); }
+.searchInput { padding-left: 2.5rem; }
+
+.locaisGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0.875rem;
+}
+.localCard {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+}
+.localIcon {
+  width: 40px; height: 40px;
+  background: var(--color-primary-subtle);
+  color: var(--color-primary);
+  border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.localInfo { flex: 1; display: flex; flex-direction: column; gap: 0.2rem; overflow: hidden; }
+.localInfo span:first-child { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.localActions { display: flex; gap: 0.4rem; flex-shrink: 0; }
