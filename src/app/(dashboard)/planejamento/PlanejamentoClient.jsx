@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect, useCallback } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { format, parseISO, startOfMonth, endOfMonth, eachDayOfInterval, addMonths, subMonths, getDay, isSameDay } from 'date-fns'
+import { format, parseISO, startOfMonth, endOfMonth, eachDayOfInterval, addMonths, subMonths, getDay, isSameDay, isWeekend } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import Modal from '@/components/Modal'
 import StatusBadge from '@/components/StatusBadge'
@@ -21,6 +21,7 @@ function emptyForm() {
     planejado_dt_inicio: '', planejado_dt_fim: '',
     executado_dt_inicio: '', executado_dt_fim: '',
     objetivo: '', status: 'Pendente', observacao: '',
+    ocorre_fds: false,
   }
 }
 
@@ -73,6 +74,7 @@ export default function PlanejamentoClient() {
       objetivo: at.objetivo || '',
       status: at.status || 'Pendente',
       observacao: at.observacao || '',
+      ocorre_fds: at.ocorre_fds || false,
     })
     setSaveError('')
     setModalOpen(true)
@@ -94,6 +96,7 @@ export default function PlanejamentoClient() {
         objetivo: form.objetivo || null,
         status: form.status,
         observacao: form.observacao || null,
+        ocorre_fds: form.ocorre_fds,
         atualizado_em: new Date().toISOString(),
       }
       let atId = editing?.id
@@ -142,7 +145,9 @@ export default function PlanejamentoClient() {
       try {
         const start = parseISO(at.planejado_dt_inicio)
         const end = parseISO(at.planejado_dt_fim)
-        return day >= start && day <= end
+        if (day < start || day > end) return false
+        if (isWeekend(day) && !at.ocorre_fds) return false
+        return true
       } catch { return false }
     })
   }
@@ -342,6 +347,12 @@ export default function PlanejamentoClient() {
               <label className="form-label">Exec. Fim</label>
               <input type="date" className="form-control" value={form.executado_dt_fim} onChange={e => setForm(f=>({...f,executado_dt_fim:e.target.value}))} />
             </div>
+          </div>
+          <div className="form-group">
+            <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', textTransform: 'none', letterSpacing: 'normal', fontWeight: '500' }}>
+              <input type="checkbox" checked={form.ocorre_fds} onChange={e => setForm(f=>({...f,ocorre_fds:e.target.checked}))} style={{ accentColor: 'var(--color-primary)', width: '16px', height: '16px', margin: 0 }} />
+              A atividade ocorrerá também em fins de semana
+            </label>
           </div>
           <div className="form-group">
             <label className="form-label">Status</label>
