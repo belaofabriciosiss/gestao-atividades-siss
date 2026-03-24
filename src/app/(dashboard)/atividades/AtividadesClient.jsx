@@ -91,6 +91,7 @@ export default function AtividadesPage({ userPapel, userId }) {
       planejado_dt_inicio: atividade.planejado_dt_inicio || '',
       planejado_dt_fim: atividade.planejado_dt_fim || '',
       responsavel_ids: atividade.atividade_responsaveis?.map(r => r.responsavel_id) || [],
+      ocorre_fds: atividade.ocorre_fds || false,
     })
     setSaveError('')
     setModalOpen(true)
@@ -112,6 +113,7 @@ export default function AtividadesPage({ userPapel, userId }) {
         update.local_id = form.local_id
         update.planejado_dt_inicio = form.planejado_dt_inicio
         update.planejado_dt_fim = form.planejado_dt_fim
+        update.ocorre_fds = form.ocorre_fds
       }
 
       const { error: upErr } = await supabase
@@ -334,6 +336,12 @@ export default function AtividadesPage({ userPapel, userId }) {
                 <label className="form-label">Plan. Fim</label>
                 <input type="date" className="form-control" value={form.planejado_dt_fim} onChange={e => setForm(f => ({...f, planejado_dt_fim: e.target.value}))} />
               </div>
+            </div>
+            <div className="form-group" style={{marginBottom:'1rem'}}>
+              <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', textTransform: 'none', letterSpacing: 'normal', fontWeight: '500' }}>
+                <input type="checkbox" checked={form.ocorre_fds} onChange={e => setForm(f=>({...f,ocorre_fds:e.target.checked}))} style={{ accentColor: 'var(--color-primary)', width: '16px', height: '16px', margin: 0 }} />
+                A atividade ocorrerá também em fins de semana
+              </label>
             </div>
             <div className="form-group" style={{marginBottom:'1rem'}}>
               <label className="form-label">Responsáveis</label>
