@@ -177,27 +177,24 @@ export default function AtividadesPage({ userPapel, userId }) {
       : '____ / ____ / ______'
     const descricao = form.objetivo || '—'
     const observacao = form.observacao || ''
-    const hoje = format(new Date(), 'dd/MM/yyyy', { locale: ptBR })
-    const versao = format(new Date(), 'yyyy/MMddHHmmss', { locale: ptBR })
+    const versao = '2026/0323133234'
 
     const html = `<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>RAT - Relatório de Atividades</title>
+<title> </title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: Arial, sans-serif; font-size: 11px; color: #222; background: #fff; padding: 20mm 15mm; }
-  @page { size: A4; margin: 15mm; }
-  @media print { body { padding: 0; } .no-print { display: none; } }
+  body { font-family: Arial, sans-serif; font-size: 11px; color: #222; background: #fff; padding: 15mm; }
+  @page { size: A4; margin: 0; }
+  @media print { body { padding: 10mm 15mm; } }
 
-  .btn-print { display: block; margin: 0 auto 20px; padding: 10px 28px; background: #008E7B; color: white;
-    border: none; border-radius: 6px; font-size: 14px; cursor: pointer; font-weight: bold; }
-  .btn-print:hover { background: #006d5e; }
 
   /* Header */
   .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
-  .logo { border: 2px solid #222; padding: 4px 8px; display: inline-block; }
+  .logo-img { max-height: 70px; max-width: 150px; object-fit: contain; }
+  .logo-text { border: 2px solid #222; padding: 4px 8px; display: inline-block; }
   .logo-gies { display: flex; }
   .logo-gi { font-size: 32px; font-weight: 900; color: #2b6496; letter-spacing: -2px; }
   .logo-espp { font-size: 32px; font-weight: 900; color: #e04a1c; letter-spacing: -2px; }
@@ -233,12 +230,15 @@ export default function AtividadesPage({ userPapel, userId }) {
 </style>
 </head>
 <body>
-<button class="btn-print no-print" onclick="window.print()">&#128438; Salvar / Imprimir PDF</button>
 
 <div class="header">
-  <div class="logo">
-    <div class="logo-gies"><span class="logo-gi">GI</span><span class="logo-espp">espp</span></div>
-    <div class="logo-sub">GESTÃO INTELIGENTE DA EDUCAÇÃO<br>E SAÚDE PÚBLICA E PRIVADA</div>
+  <div>
+    <img class="logo-img" src="${window.location.origin}/giespp-logo.png" alt="Giespp" 
+      onerror="this.style.display='none';document.getElementById('logo-fb').style.display='inline-block'" />
+    <div id="logo-fb" style="display:none" class="logo-text">
+      <div class="logo-gies"><span class="logo-gi">GI</span><span class="logo-espp">espp</span></div>
+      <div class="logo-sub">GESTÃO INTELIGENTE DA EDUCAÇÃO<br>E SAÚDE PÚBLICA E PRIVADA</div>
+    </div>
   </div>
   <div class="report-title">Relatório de Atividades</div>
 </div>
