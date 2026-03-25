@@ -165,6 +165,159 @@ export default function AtividadesPage({ userPapel, userId }) {
     })
   }
 
+  function handleGenerateRAT() {
+    if (!selected) return
+    const responsaveis = selected.atividade_responsaveis?.map(r => r.profiles?.nome).filter(Boolean).join(', ') || '—'
+    const local = selected.locais?.nome || '—'
+    const dtInicio = selected.executado_dt_inicio
+      ? format(parseISO(selected.executado_dt_inicio), 'dd/MM/yyyy', { locale: ptBR })
+      : '____ / ____ / ______'
+    const dtFim = selected.executado_dt_fim
+      ? format(parseISO(selected.executado_dt_fim), 'dd/MM/yyyy', { locale: ptBR })
+      : '____ / ____ / ______'
+    const descricao = form.objetivo || '—'
+    const observacao = form.observacao || ''
+    const hoje = format(new Date(), 'dd/MM/yyyy', { locale: ptBR })
+    const versao = format(new Date(), 'yyyy/MMddHHmmss', { locale: ptBR })
+
+    const html = `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>RAT - Relatório de Atividades</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: Arial, sans-serif; font-size: 11px; color: #222; background: #fff; padding: 20mm 15mm; }
+  @page { size: A4; margin: 15mm; }
+  @media print { body { padding: 0; } .no-print { display: none; } }
+
+  .btn-print { display: block; margin: 0 auto 20px; padding: 10px 28px; background: #008E7B; color: white;
+    border: none; border-radius: 6px; font-size: 14px; cursor: pointer; font-weight: bold; }
+  .btn-print:hover { background: #006d5e; }
+
+  /* Header */
+  .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+  .logo { border: 2px solid #222; padding: 4px 8px; display: inline-block; }
+  .logo-gies { display: flex; }
+  .logo-gi { font-size: 32px; font-weight: 900; color: #2b6496; letter-spacing: -2px; }
+  .logo-espp { font-size: 32px; font-weight: 900; color: #e04a1c; letter-spacing: -2px; }
+  .logo-sub { font-size: 6.5px; color: #444; margin-top: 2px; line-height: 1.3; max-width: 120px; }
+  .report-title { font-size: 22px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; text-align: right; }
+  .divider { border: none; border-top: 2px solid #222; margin: 6px 0 10px; }
+
+  /* Main table */
+  .info-table { width: 100%; border-collapse: collapse; margin-bottom: 12px; }
+  .info-table td { border: 1px solid #555; padding: 5px 7px; vertical-align: top; }
+  .info-table .label { font-weight: bold; font-style: italic; white-space: nowrap; width: 130px; background: #fff; }
+  .info-table .label-sm { font-weight: bold; font-style: italic; white-space: nowrap; width: 70px; }
+
+  /* Activity section */
+  .section-box { border: 1px solid #555; margin-bottom: 12px; }
+  .section-header { background: #c8d8e8; padding: 6px 8px; font-weight: bold; font-style: italic; font-size: 11px; }
+  .section-header .row { display: flex; justify-content: space-between; }
+  .section-content { padding: 10px 8px; min-height: 200px; line-height: 1.8; white-space: pre-wrap; border-top: 1px solid #555; }
+
+  /* Signature section */
+  .sig-box { border: 1px solid #555; }
+  .sig-header { background: #c8d8e8; padding: 6px 8px; font-style: italic; }
+  .sig-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; border-top: 1px solid #555; }
+  .sig-cell { padding: 10px 10px 20px; font-size: 11px; }
+  .sig-cell:not(:last-child) { border-right: 1px solid #555; }
+  .sig-label { font-style: italic; margin-bottom: 28px; }
+  .sig-value { border-top: 1px solid #333; padding-top: 4px; }
+  .date-line { display: flex; gap: 4px; align-items: center; margin-top: 28px; }
+  .date-line span { border-bottom: 1px solid #333; width: 50px; display: inline-block; }
+
+  /* Footer */
+  .footer { display: flex; justify-content: space-between; margin-top: 16px; border-top: 1px solid #555; padding-top: 8px; font-size: 10px; color: #555; }
+</style>
+</head>
+<body>
+<button class="btn-print no-print" onclick="window.print()">&#128438; Salvar / Imprimir PDF</button>
+
+<div class="header">
+  <div class="logo">
+    <div class="logo-gies"><span class="logo-gi">GI</span><span class="logo-espp">espp</span></div>
+    <div class="logo-sub">GESTÃO INTELIGENTE DA EDUCAÇÃO<br>E SAÚDE PÚBLICA E PRIVADA</div>
+  </div>
+  <div class="report-title">Relatório de Atividades</div>
+</div>
+<hr class="divider">
+
+<table class="info-table">
+  <tr>
+    <td class="label">Contratada:</td>
+    <td>Giespp Gestão Inteligente de Educação e Saúde Pública e Privada Ltda.</td>
+    <td class="label-sm">Produto:</td>
+    <td style="width:90px">SISS</td>
+  </tr>
+  <tr>
+    <td class="label">Contratante:</td>
+    <td>Prefeitura Municipal de Guarulhos</td>
+    <td class="label-sm">Contrato:</td>
+    <td>040401/2023-DLC</td>
+  </tr>
+  <tr>
+    <td class="label">Local:</td>
+    <td colspan="3">${local}</td>
+  </tr>
+  <tr>
+    <td class="label">Referente Entrega<br>Contratual:</td>
+    <td colspan="3">    -6. SUPORTE, MANUTENÇÃO E OPERAÇÃO-Suporte e Manutenção-Siss</td>
+  </tr>
+  <tr>
+    <td class="label">Responsável:</td>
+    <td colspan="3">${responsaveis}</td>
+  </tr>
+</table>
+
+<div class="section-box">
+  <div class="section-header">
+    <div class="row">
+      <span><em>Data e Hora Início:</em> ${dtInicio}</span>
+      <span><em>Data e Hora Fim:</em> ${dtFim}</span>
+    </div>
+    <div><em>Tipo de Atividade:</em> Suporte Operacional</div>
+    <div><em>Descrição da Atividade:</em></div>
+  </div>
+  <div class="section-content">${descricao}${observacao ? '\n\n' + observacao : ''}</div>
+</div>
+
+<div class="sig-box">
+  <div class="sig-header">Atesto que as atividades foram realizadas como descritas.</div>
+  <div class="sig-grid">
+    <div class="sig-cell">
+      <div class="sig-label">Data:</div>
+      <div class="date-line"><span></span> / <span></span> / <span style="width:70px"></span></div>
+    </div>
+    <div class="sig-cell">
+      <div class="sig-label">Assinatura do Responsável:</div>
+      <div class="sig-value">${responsaveis}</div>
+    </div>
+    <div class="sig-cell">
+      <div class="sig-label">Assinatura do Cliente:</div>
+      <div class="sig-value" style="font-style:italic;color:#555">
+        Nome legível e cargo do cliente<br>Carimbo com assinatura e matrícula
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <span>Versão do Conteúdo nº ${versao}</span>
+  <span>Página 1 de 1</span>
+</div>
+
+</body>
+</html>`
+
+    const win = window.open('', '_blank', 'width=900,height=700')
+    if (win) {
+      win.document.write(html)
+      win.document.close()
+    }
+  }
+
   if (loading) return (
     <div className="loading-center"><div className="spinner" /></div>
   )
@@ -402,8 +555,28 @@ export default function AtividadesPage({ userPapel, userId }) {
           <textarea className="form-control" rows={3} value={form.observacao} onChange={e => setForm(f => ({...f, observacao: e.target.value}))} placeholder="Observações adicionais..." />
         </div>
 
-        {/* Botão WhatsApp */}
-        <div style={{display:'flex', justifyContent:'flex-end', marginTop:'0.5rem'}}>
+        {/* Botões WhatsApp + RAT */}
+        <div style={{display:'flex', justifyContent:'flex-end', marginTop:'0.5rem', gap:'0.5rem'}}>
+          <button
+            type="button"
+            onClick={handleGenerateRAT}
+            style={{
+              display:'flex', alignItems:'center', gap:'0.5rem',
+              padding:'0.5rem 1rem', borderRadius:'var(--radius-sm)',
+              border:'none', cursor:'pointer', fontWeight:'600', fontSize:'0.875rem',
+              background:'#1a56db', color:'white', transition:'all 0.2s'
+            }}
+            title="Gerar Relatório de Atividades (RAT)"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+              <polyline points="10 9 9 9 8 9"/>
+            </svg>
+            Gerar RAT
+          </button>
           <button
             type="button"
             onClick={handleCopyWhatsApp}
