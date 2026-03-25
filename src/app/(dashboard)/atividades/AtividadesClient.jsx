@@ -227,8 +227,16 @@ export default function AtividadesPage({ userPapel, userId }) {
   .date-line { display: flex; gap: 4px; align-items: center; margin-top: 28px; }
   .date-line span { border-bottom: 1px solid #333; width: 50px; display: inline-block; }
 
-  /* Footer */
-  .footer { display: flex; justify-content: space-between; margin-top: 16px; border-top: 1px solid #555; padding-top: 8px; font-size: 10px; color: #555; }
+  /* Footer — fixo no rodapé de cada página impressa */
+  .footer {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    display: flex; justify-content: space-between;
+    border-top: 1px solid #555; padding: 6px 15mm;
+    font-size: 10px; color: #555; background: #fff;
+  }
+  /* Espaço extra no final do body para o conteúdo não ficar atrás do rodapé */
+  body { padding-bottom: 20mm; }
 </style>
 </head>
 <body>
