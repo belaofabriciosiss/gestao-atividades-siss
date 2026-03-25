@@ -186,9 +186,9 @@ export default function AtividadesPage({ userPapel, userId }) {
 <title> </title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: Arial, sans-serif; font-size: 11px; color: #222; background: #fff; padding: 15mm; }
+  body { font-family: Arial, sans-serif; font-size: 11px; color: #222; background: #fff; padding: 15mm 15mm 22mm; }
   @page { size: A4; margin: 0; }
-  @media print { body { padding: 10mm 15mm; } }
+  @media print { body { padding: 10mm 15mm 22mm; } }
 
 
   /* Header */
@@ -293,6 +293,8 @@ export default function AtividadesPage({ userPapel, userId }) {
   <div class="section-content">${descricao}${observacao ? '\n\n' + observacao : ''}</div>
 </div>
 
+<div id="rat-content">
+
 <div class="sig-box">
   <div class="sig-header">Atesto que as atividades foram realizadas como descritas.</div>
   <div class="sig-grid">
@@ -313,10 +315,30 @@ export default function AtividadesPage({ userPapel, userId }) {
   </div>
 </div>
 
+</div><!-- #rat-content -->
+
 <div class="footer">
   <span>Versão do Conteúdo nº ${versao}</span>
-  <span>Página 1 de 1</span>
+  <span>Página <span id="pg-num">1</span> de <span id="pg-total">1</span></span>
 </div>
+
+<script>
+window.addEventListener('load', function() {
+  setTimeout(function() {
+    var content = document.getElementById('rat-content');
+    // A4 a 96 DPI = ~1123px; descontamos ~60px de padding e rodapé
+    var pageH = 1063;
+    var total = Math.max(1, Math.ceil(content.scrollHeight / pageH));
+    document.getElementById('pg-total').textContent = total;
+
+    // Atualiza a página atual durante a impressão
+    // (Chrome não suporta counter(page) no body, usamos beforeprint)
+    window.addEventListener('beforeprint', function() {
+      document.getElementById('pg-num').textContent = '1';
+    });
+  }, 300);
+});
+</script>
 
 </body>
 </html>`
