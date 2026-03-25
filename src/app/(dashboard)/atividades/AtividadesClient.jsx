@@ -205,13 +205,15 @@ export default function AtividadesPage({ userPapel, userId }) {
   /* Main table */
   .info-table { width: 100%; border-collapse: collapse; margin-bottom: 12px; }
   .info-table td { border: 1px solid #555; padding: 5px 7px; vertical-align: top; }
-  .info-table .label { font-weight: bold; font-style: italic; white-space: nowrap; width: 130px; background: #fff; }
-  .info-table .label-sm { font-weight: bold; font-style: italic; white-space: nowrap; width: 70px; }
+  .info-table .label { font-weight: bold; font-style: italic; white-space: nowrap; width: 130px; background: #c8d8e8; }
+  .info-table .label-sm { font-weight: bold; font-style: italic; white-space: nowrap; width: 70px; background: #c8d8e8; }
 
   /* Activity section */
   .section-box { border: 1px solid #555; margin-bottom: 12px; }
-  .section-header { background: #c8d8e8; padding: 6px 8px; font-weight: bold; font-style: italic; font-size: 11px; }
-  .section-header .row { display: flex; justify-content: space-between; }
+  .section-header { background: #c8d8e8; padding: 0 8px; font-weight: bold; font-style: italic; font-size: 11px; }
+  .section-header .row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #8aaac0; }
+  .section-header .sh-line { padding: 5px 0; border-bottom: 1px solid #8aaac0; }
+  .section-header .sh-line:last-child { border-bottom: none; }
   .section-content { padding: 10px 8px; min-height: 200px; line-height: 1.8; white-space: pre-wrap; border-top: 1px solid #555; }
 
   /* Signature section */
@@ -277,8 +279,8 @@ export default function AtividadesPage({ userPapel, userId }) {
       <span><em>Data e Hora Início:</em> ${dtInicio}</span>
       <span><em>Data e Hora Fim:</em> ${dtFim}</span>
     </div>
-    <div><em>Tipo de Atividade:</em> Suporte Operacional</div>
-    <div><em>Descrição da Atividade:</em></div>
+    <div class="sh-line"><em>Tipo de Atividade:</em> Suporte Operacional</div>
+    <div class="sh-line"><em>Descrição da Atividade:</em></div>
   </div>
   <div class="section-content">${descricao}${observacao ? '\n\n' + observacao : ''}</div>
 </div>
