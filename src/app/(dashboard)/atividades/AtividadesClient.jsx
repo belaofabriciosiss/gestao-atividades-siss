@@ -158,7 +158,7 @@ export default function AtividadesPage({ userPapel, userId }) {
     const local = selected.locais?.nome || '—'
     const objetivo = form.objetivo || '—'
     const observacao = form.observacao || ''
-    const msg = `${responsaveis}\n${local}\n${objetivo}${observacao ? '\n' + observacao : ''}`
+    const msg = `Responsável: ${responsaveis}\nLocal: ${local}\nObjetivo: ${objetivo}${observacao ? '\n\nObservações: ' + observacao : ''}`
     navigator.clipboard.writeText(msg).then(() => {
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
